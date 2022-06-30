@@ -321,19 +321,28 @@ impl FromStr for Fee {
 #[derive(Accounts)]
 pub struct Initialize<'info> {
     #[account(signer)]
-    pub creator_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub creator_authority: AccountInfo<'info>,
     #[account(zero, rent_exempt = enforce)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
 
-    pub reserve_pda: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub reserve_pda: AccountInfo<'info>,
     #[account(mut, rent_exempt = enforce)]
-    pub stake_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_list: AccountInfo<'info>,
     #[account(mut, rent_exempt = enforce)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
 
     pub msol_mint: CpiAccount<'info, Mint>,
 
-    pub operational_sol_account: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub operational_sol_account: AccountInfo<'info>,
 
     pub liq_pool: LiqPoolInitialize<'info>,
 
@@ -361,7 +370,8 @@ pub struct InitializeData {
 #[derive(Accounts)]
 pub struct LiqPoolInitialize<'info> {
     pub lp_mint: CpiAccount<'info, Mint>,
-    pub sol_leg_pda: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub sol_leg_pda: AccountInfo<'info>,
     pub msol_leg: CpiAccount<'info, TokenAccount>,
 }
 
@@ -377,9 +387,12 @@ pub struct LiqPoolInitializeData {
 #[derive(Accounts)]
 pub struct ChangeAuthority<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub admin_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub admin_authority: AccountInfo<'info>,
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, AnchorSerialize, AnchorDeserialize)]
@@ -394,12 +407,15 @@ pub struct ChangeAuthorityData {
 #[derive(Accounts)]
 pub struct AddLiquidity<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
 
     #[account(mut)]
+	///CHECK: many
     pub lp_mint: CpiAccount<'info, Mint>,
 
-    pub lp_mint_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub lp_mint_authority: AccountInfo<'info>,
 
     // msol_mint to be able to compute current msol value in liq_pool
     // not needed because we use memorized value
@@ -408,302 +424,445 @@ pub struct AddLiquidity<'info> {
     pub liq_pool_msol_leg: CpiAccount<'info, TokenAccount>,
 
     #[account(mut)]
+	///CHECK: many
     // seeds = [&state.to_account_info().key.to_bytes()[..32], LiqPool::SOL_ACCOUNT_SEED], bump = state.liq_pool.sol_account_bump_seed)]
     // #[account(owner = "11111111111111111111111111111111")]
-    pub liq_pool_sol_leg_pda: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub liq_pool_sol_leg_pda: AccountInfo<'info>,
 
     // #[check_owner_program("11111111111111111111111111111111")]
     #[account(mut, signer)] //, owner = "11111111111111111111111111111111")]
-    pub transfer_from: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub transfer_from: AccountInfo<'info>,
 
     // #[check_owner_program("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")]
     #[account(mut)] // , owner = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")]
+	///CHECK: many
     pub mint_to: CpiAccount<'info, TokenAccount>,
 
     // #[account(address = "11111111111111111111111111111111")]
+	///CHECK: many
     // #[check_address("11111111111111111111111111111111")]
-    pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
 
     // #[account(address = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")]
+	///CHECK: many
     // #[check_address("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")]
-    pub token_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub token_program: AccountInfo<'info>,
 }
 //-----------------------------------------------------
 #[derive(Accounts)]
 pub struct RemoveLiquidity<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
 
     #[account(mut)]
+	///CHECK: many
     pub lp_mint: CpiAccount<'info, Mint>,
 
     // pub msol_mint: CpiAccount<'info, Mint>, // not needed anymore
     #[account(mut)]
+	///CHECK: many
     pub burn_from: CpiAccount<'info, TokenAccount>,
     #[account(signer)]
-    pub burn_from_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub burn_from_authority: AccountInfo<'info>,
 
     #[account(mut)]
-    pub transfer_sol_to: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub transfer_sol_to: AccountInfo<'info>,
 
     #[account(mut)]
+	///CHECK: many
     pub transfer_msol_to: CpiAccount<'info, TokenAccount>,
 
     // legs
     #[account(mut)]
-    pub liq_pool_sol_leg_pda: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub liq_pool_sol_leg_pda: AccountInfo<'info>,
     #[account(mut)]
+	///CHECK: many
     pub liq_pool_msol_leg: CpiAccount<'info, TokenAccount>,
-    pub liq_pool_msol_leg_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub liq_pool_msol_leg_authority: AccountInfo<'info>,
 
-    pub system_program: AccountInfo<'info>,
-    pub token_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub token_program: AccountInfo<'info>,
 }
 //-----------------------------------------------------
 #[derive(Accounts)]
 pub struct Deposit<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
 
     #[account(mut)]
+	///CHECK: many
     pub msol_mint: CpiAccount<'info, Mint>,
 
     #[account(mut)]
-    pub liq_pool_sol_leg_pda: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub liq_pool_sol_leg_pda: AccountInfo<'info>,
 
     #[account(mut)]
+	///CHECK: many
     pub liq_pool_msol_leg: CpiAccount<'info, TokenAccount>,
-    pub liq_pool_msol_leg_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub liq_pool_msol_leg_authority: AccountInfo<'info>,
 
     #[account(mut)]
-    pub reserve_pda: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub reserve_pda: AccountInfo<'info>,
 
     #[account(mut, signer)]
-    pub transfer_from: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub transfer_from: AccountInfo<'info>,
 
     #[account(mut)]
+	///CHECK: many
     pub mint_to: CpiAccount<'info, TokenAccount>,
 
-    pub msol_mint_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub msol_mint_authority: AccountInfo<'info>,
 
-    pub system_program: AccountInfo<'info>,
-    pub token_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub token_program: AccountInfo<'info>,
 }
 
 //-----------------------------------------------------
 #[derive(Accounts)]
 pub struct DepositStakeAccount<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
 
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
     #[account(mut)]
-    pub stake_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_list: AccountInfo<'info>,
 
     #[account(mut)]
+	///CHECK: many
     pub stake_account: CpiAccount<'info, StakeWrapper>,
     #[account(signer)]
-    pub stake_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_authority: AccountInfo<'info>,
     #[account(mut)]
-    pub duplication_flag: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub duplication_flag: AccountInfo<'info>,
     #[account(mut, signer)]
-    pub rent_payer: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub rent_payer: AccountInfo<'info>,
 
     #[account(mut)]
+	///CHECK: many
     pub msol_mint: CpiAccount<'info, Mint>,
     #[account(mut)]
+	///CHECK: many
     pub mint_to: CpiAccount<'info, TokenAccount>,
 
-    pub msol_mint_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub msol_mint_authority: AccountInfo<'info>,
 
     pub clock: Sysvar<'info, Clock>,
     pub rent: Sysvar<'info, Rent>,
 
-    pub system_program: AccountInfo<'info>,
-    pub token_program: AccountInfo<'info>,
-    pub stake_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub token_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_program: AccountInfo<'info>,
 }
 
 //-----------------------------------------------------
 #[derive(Accounts)]
 pub struct LiquidUnstake<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
 
     #[account(mut)]
+	///CHECK: many
     pub msol_mint: CpiAccount<'info, Mint>,
 
     #[account(mut)]
-    pub liq_pool_sol_leg_pda: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub liq_pool_sol_leg_pda: AccountInfo<'info>,
 
     #[account(mut)]
+	///CHECK: many
     pub liq_pool_msol_leg: CpiAccount<'info, TokenAccount>,
     #[account(mut)]
-    pub treasury_msol_account: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub treasury_msol_account: AccountInfo<'info>,
 
     #[account(mut)]
+	///CHECK: many
     pub get_msol_from: CpiAccount<'info, TokenAccount>,
     #[account(signer)]
-    pub get_msol_from_authority: AccountInfo<'info>, //burn_msol_from owner or delegate_authority
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub get_msol_from_authority: AccountInfo<'info>, //burn_msol_from owner or delegate_authority
 
     #[account(mut)]
-    pub transfer_sol_to: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub transfer_sol_to: AccountInfo<'info>,
 
-    pub system_program: AccountInfo<'info>,
-    pub token_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub token_program: AccountInfo<'info>,
 }
 //-----------------------------------------------------
 #[derive(Accounts)]
 pub struct AddValidator<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub manager_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub manager_authority: AccountInfo<'info>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
 
-    pub validator_vote: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub validator_vote: AccountInfo<'info>,
     #[account(mut)]
-    pub duplication_flag: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub duplication_flag: AccountInfo<'info>,
     #[account(mut, signer)]
-    pub rent_payer: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub rent_payer: AccountInfo<'info>,
 
     pub clock: Sysvar<'info, Clock>,
     pub rent: Sysvar<'info, Rent>,
 
-    pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
 }
 
 //-----------------------------------------------------
 #[derive(Accounts)]
 pub struct RemoveValidator<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub manager_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub manager_authority: AccountInfo<'info>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
 
     #[account(mut)]
-    pub duplication_flag: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub duplication_flag: AccountInfo<'info>,
     #[account(mut)]
-    pub operational_sol_account: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub operational_sol_account: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct SetValidatorScore<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub manager_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub manager_authority: AccountInfo<'info>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct ConfigValidatorSystem<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub manager_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub manager_authority: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct OrderUnstake<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(mut)]
+	///CHECK: many
     pub msol_mint: CpiAccount<'info, Mint>,
 
     // Note: Ticket beneficiary is burn_msol_from.owner
     #[account(mut)]
+	///CHECK: many
     pub burn_msol_from: CpiAccount<'info, TokenAccount>,
 
     #[account(signer)]
-    pub burn_msol_authority: AccountInfo<'info>, // burn_msol_from acc must be pre-delegated with enough amount to this key or input owner signature here
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub burn_msol_authority: AccountInfo<'info>, // burn_msol_from acc must be pre-delegated with enough amount to this key or input owner signature here
 
     #[account(zero, rent_exempt = enforce)]
+	///CHECK: many
     pub new_ticket_account: ProgramAccount<'info, TicketAccountData>,
 
     pub clock: Sysvar<'info, Clock>,
     pub rent: Sysvar<'info, Rent>,
-    pub token_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub token_program: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct Claim<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(mut)]
-    pub reserve_pda: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub reserve_pda: AccountInfo<'info>,
 
     #[account(mut)]
+	///CHECK: many
     pub ticket_account: ProgramAccount<'info, TicketAccountData>,
 
     #[account(mut)]
-    pub transfer_sol_to: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub transfer_sol_to: AccountInfo<'info>,
 
     pub clock: Sysvar<'info, Clock>,
 
-    pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct StakeReserve<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
     #[account(mut)]
-    pub stake_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_list: AccountInfo<'info>,
     #[account(mut)]
-    pub validator_vote: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_vote: AccountInfo<'info>,
     #[account(mut)]
-    pub reserve_pda: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub reserve_pda: AccountInfo<'info>,
     #[account(mut)]
+	///CHECK: many
     pub stake_account: CpiAccount<'info, StakeWrapper>, // must be uninitialized
-    pub stake_deposit_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_deposit_authority: AccountInfo<'info>,
 
     pub clock: Sysvar<'info, Clock>,
     pub epoch_schedule: Sysvar<'info, EpochSchedule>,
     pub rent: Sysvar<'info, Rent>,
-    pub stake_history: AccountInfo<'info>, // have no CPU budget to parse Sysvar<'info, StakeHistory>,
-    pub stake_config: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_history: AccountInfo<'info>, // have no CPU budget to parse Sysvar<'info, StakeHistory>,
+    ///CHECK: stf anchor
+	pub stake_config: AccountInfo<'info>,
 
-    pub system_program: AccountInfo<'info>,
-    pub stake_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_program: AccountInfo<'info>,
 }
 #[derive(Accounts)]
 pub struct UpdateCommon<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(mut)]
-    pub stake_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_list: AccountInfo<'info>,
     #[account(mut)]
+	///CHECK: many
     pub stake_account: CpiAccount<'info, StakeWrapper>,
-    pub stake_withdraw_authority: AccountInfo<'info>, // for getting non delegated SOLs
+    ///CHECK: stf anchor
+	pub stake_withdraw_authority: AccountInfo<'info>, // for getting non delegated SOLs
     #[account(mut)]
-    pub reserve_pda: AccountInfo<'info>, // all non delegated SOLs (if some attacker transfers it to stake) are sent to reserve_pda
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub reserve_pda: AccountInfo<'info>, // all non delegated SOLs (if some attacker transfers it to stake) are sent to reserve_pda
 
     #[account(mut)]
+	///CHECK: many
     pub msol_mint: CpiAccount<'info, Mint>,
-    pub msol_mint_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub msol_mint_authority: AccountInfo<'info>,
     #[account(mut)]
-    pub treasury_msol_account: AccountInfo<'info>, //receives 1% from staking rewards protocol fee
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub treasury_msol_account: AccountInfo<'info>, //receives 1% from staking rewards protocol fee
 
     pub clock: Sysvar<'info, Clock>,
-    pub stake_history: AccountInfo<'info>, // have no CPU budget to parse Sysvar<'info, StakeHistory>,
+    ///CHECK: stf anchor
+	pub stake_history: AccountInfo<'info>, // have no CPU budget to parse Sysvar<'info, StakeHistory>,
 
-    pub stake_program: AccountInfo<'info>,
-    pub token_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub token_program: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct UpdateActive<'info> {
     pub common: UpdateCommon<'info>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
 }
 
 impl<'info> Deref for UpdateActive<'info> {
@@ -725,9 +884,12 @@ pub struct UpdateDeactivated<'info> {
     pub common: UpdateCommon<'info>,
 
     #[account(mut)]
-    pub operational_sol_account: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub operational_sol_account: AccountInfo<'info>,
 
-    pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
 }
 
 impl<'info> Deref for UpdateDeactivated<'info> {
@@ -747,9 +909,12 @@ impl<'info> DerefMut for UpdateDeactivated<'info> {
 #[derive(Accounts)]
 pub struct SetLpParams<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub admin_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub admin_authority: AccountInfo<'info>,
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, AnchorSerialize, AnchorDeserialize)]
@@ -767,104 +932,162 @@ pub struct ConfigMarinadeParams {
 #[derive(Accounts)]
 pub struct ConfigMarinade<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub admin_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub admin_authority: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct DeactivateStake<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     // Readonly. For stake delta calculation
-    pub reserve_pda: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub reserve_pda: AccountInfo<'info>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
     #[account(mut)]
-    pub stake_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_list: AccountInfo<'info>,
     #[account(mut)]
+	///CHECK: many
     pub stake_account: CpiAccount<'info, StakeWrapper>,
-    pub stake_deposit_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_deposit_authority: AccountInfo<'info>,
     #[account(mut, signer)]
-    pub split_stake_account: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub split_stake_account: AccountInfo<'info>,
     #[account(mut, signer)]
-    pub split_stake_rent_payer: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub split_stake_rent_payer: AccountInfo<'info>,
 
     pub clock: Sysvar<'info, Clock>,
     pub rent: Sysvar<'info, Rent>,
     pub epoch_schedule: Sysvar<'info, EpochSchedule>,
-    pub stake_history: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_history: AccountInfo<'info>,
 
-    pub system_program: AccountInfo<'info>,
-    pub stake_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_program: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct EmergencyUnstake<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub validator_manager_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_manager_authority: AccountInfo<'info>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
     #[account(mut)]
-    pub stake_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_list: AccountInfo<'info>,
     #[account(mut)]
+	///CHECK: many
     pub stake_account: CpiAccount<'info, StakeWrapper>,
-    pub stake_deposit_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_deposit_authority: AccountInfo<'info>,
 
     pub clock: Sysvar<'info, Clock>,
 
-    pub stake_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_program: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct PartialUnstake<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(signer)]
-    pub validator_manager_authority: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_manager_authority: AccountInfo<'info>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
     #[account(mut)]
-    pub stake_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_list: AccountInfo<'info>,
     #[account(mut)]
+	///CHECK: many
     pub stake_account: CpiAccount<'info, StakeWrapper>,
-    pub stake_deposit_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_deposit_authority: AccountInfo<'info>,
     // Readonly. For stake delta calculation
-    pub reserve_pda: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub reserve_pda: AccountInfo<'info>,
     #[account(mut, signer)]
-    pub split_stake_account: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub split_stake_account: AccountInfo<'info>,
     #[account(mut, signer)]
-    pub split_stake_rent_payer: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub split_stake_rent_payer: AccountInfo<'info>,
 
     pub clock: Sysvar<'info, Clock>,
     pub rent: Sysvar<'info, Rent>,
-    pub stake_history: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_history: AccountInfo<'info>,
 
-    pub system_program: AccountInfo<'info>,
-    pub stake_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub system_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_program: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
 pub struct MergeStakes<'info> {
     #[account(mut)]
+	///CHECK: many
     pub state: ProgramAccount<'info, State>,
     #[account(mut)]
-    pub stake_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub stake_list: AccountInfo<'info>,
     #[account(mut)]
-    pub validator_list: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub validator_list: AccountInfo<'info>,
     #[account(mut)]
+	///CHECK: many
     pub destination_stake: CpiAccount<'info, StakeWrapper>,
     #[account(mut)]
+	///CHECK: many
     pub source_stake: CpiAccount<'info, StakeWrapper>,
-    pub stake_deposit_authority: AccountInfo<'info>,
-    pub stake_withdraw_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_deposit_authority: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_withdraw_authority: AccountInfo<'info>,
     #[account(mut)]
-    pub operational_sol_account: AccountInfo<'info>,
+	///CHECK: many
+    ///CHECK: stf anchor
+	pub operational_sol_account: AccountInfo<'info>,
 
     pub clock: Sysvar<'info, Clock>,
-    pub stake_history: AccountInfo<'info>, // have no CPU budget to parse Sysvar<'info, StakeHistory>,
+    ///CHECK: stf anchor
+	pub stake_history: AccountInfo<'info>, // have no CPU budget to parse Sysvar<'info, StakeHistory>,
 
-    pub stake_program: AccountInfo<'info>,
+    ///CHECK: stf anchor
+	pub stake_program: AccountInfo<'info>,
 }
